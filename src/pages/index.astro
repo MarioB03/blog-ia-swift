@@ -1,18 +1,14 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import { formatShortDate, readingMinutes, site } from "../lib/site";
+import { formatShortDate, isoDate, readingMinutes, site } from "../lib/site";
 
-const posts = (await getCollection("posts")).sort((a, b) =>
-  a.data.date < b.data.date ? 1 : a.data.date > b.data.date ? -1 : 0,
+const posts = (await getCollection("posts")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
   a.localeCompare(b, "es"),
 );
-
-function minutesFor(body: string) {
-  return readingMinutes(body);
-}
 ---
 
 <Layout>
@@ -47,9 +43,9 @@ function minutesFor(body: string) {
             <li data-tags={post.data.tags.join(" ")}>
               <article>
                 <p class="meta">
-                  <time datetime={post.data.date}>{formatShortDate(post.data.date)}</time>
+                  <time datetime={isoDate(post.data.date)}>{formatShortDate(post.data.date)}</time>
                   {" · "}
-                  {minutesFor(post.body)} min
+                  {readingMinutes(post.body)} min
                 </p>
                 <h2>
                   <a href={`/posts/${post.data.slug}`}>{post.data.title}</a>

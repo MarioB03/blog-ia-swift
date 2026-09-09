@@ -1,8 +1,8 @@
 ---
-title: Bienvenida: un cuaderno de IA y Swift
+title: "Bienvenida: un cuaderno de IA y Swift"
 slug: bienvenida
 date: 2026-09-09
-description: Por qué este blog existe, cómo lo escribo con agentes de código y por qué cada pieza también sale en LinkedIn.
+description: "Por qué este blog existe, cómo lo escribo con agentes de código y por qué cada pieza también sale en LinkedIn."
 tags:
   - blog
   - ia

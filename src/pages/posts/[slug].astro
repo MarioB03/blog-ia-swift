@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { formatPostDate, readingMinutes, site } from "../../lib/site";
+import { formatPostDate, isoDate, readingMinutes, site } from "../../lib/site";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -22,7 +22,7 @@ const minutes = readingMinutes(post.body);
       <a class="back" href="/">← Todas las notas</a>
       <header class="article-head">
         <p class="meta">
-          <time datetime={post.data.date}>{formatPostDate(post.data.date)}</time>
+          <time datetime={isoDate(post.data.date)}>{formatPostDate(post.data.date)}</time>
           {" · "}
           {minutes} min de lectura
         </p>
