@@ -11,7 +11,7 @@ export async function GET(context: APIContext) {
   return rss({
     title: site.name,
     description: site.description,
-    site: context.site ?? "https://blog-ia-swift.vercel.app",
+    site: context.site ?? "https://rama-blog.vercel.app",
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.description,

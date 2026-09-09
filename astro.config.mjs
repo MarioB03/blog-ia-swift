@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://blog-ia-swift.vercel.app",
+  site: "https://rama-blog.vercel.app",
   trailingSlash: "never",
   markdown: {
     shikiConfig: {
