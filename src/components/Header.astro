@@ -1,0 +1,53 @@
+---
+import { site } from "../lib/site";
+---
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label={`${site.name}, ir al inicio`}>
+      <span class="brand-name">{site.name}</span>
+      <span class="brand-author">{site.author}</span>
+    </a>
+    <nav class="nav-actions" aria-label="Acciones">
+      <a class="icon-btn" href="/rss.xml" aria-label="Fuente RSS" title="RSS">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <path d="M4 11a9 9 0 0 1 9 9"></path>
+          <path d="M4 4a16 16 0 0 1 16 16"></path>
+          <circle cx="5" cy="19" r="1"></circle>
+        </svg>
+      </a>
+      <button class="icon-btn" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Tema">
+        <span class="theme-swap">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const button = document.getElementById("theme-toggle");
+  function isDark() {
+    return document.documentElement.classList.contains("dark");
+  }
+  function sync() {
+    if (!button) return;
+    button.setAttribute("aria-label", isDark() ? "Cambiar a tema claro" : "Cambiar a tema oscuro");
+    button.setAttribute("title", isDark() ? "Tema claro" : "Tema oscuro");
+  }
+  button?.addEventListener("click", () => {
+    const next = isDark() ? "light" : "dark";
+    document.documentElement.classList.toggle("dark", next === "dark");
+    try {
+      localStorage.setItem("theme", next);
+    } catch {}
+    sync();
+  });
+  sync();
+</script>

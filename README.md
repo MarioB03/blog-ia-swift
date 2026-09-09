@@ -1,26 +1,40 @@
-# blog-ia-swift
+# IA + Swift
 
 Blog de Mario Belenguer: agentes de código (Claude Code, Grok, Codex, Cursor) aplicados a Swift / SwiftUI / Xcode. Cada artículo alimenta un post de LinkedIn.
 
-Repo vacío a propósito: el sitio se construye en **Grok Build** (Astro o Next.js + Markdown).
+Sitio estático en **Astro**. Publicar = commit de un Markdown.
 
-## Brief para Grok Build
+## Añadir un post
 
-Monta un blog estático y despliégalo en Vercel.
+1. Crea `src/content/posts/tu-slug.md`:
 
-Stack preferido: **Astro** + Markdown en `src/content/posts/` (o Next.js App Router si lo ves más claro).
+```yaml
+---
+title: Un título concreto
+slug: tu-slug
+date: 2026-09-12
+description: Una frase que se pueda leer en el lector RSS.
+tags:
+  - swiftui
+  - claude-code
+---
+```
 
-Requisitos:
-- Home con lista de posts (fecha, título, descripción)
-- Página `/posts/[slug]`
-- Frontmatter: `title`, `slug`, `date`, `description`, `tags`
+2. El `slug` del frontmatter tiene que coincidir con la URL `/posts/tu-slug`.
+3. Commit a `main`. Vercel reconstruye el sitio y el RSS (`/rss.xml`).
+
+## Local
+
+```bash
+npm install
+npm run dev
+```
+
+## Stack
+
+- Astro 5 + colecciones Markdown
+- Home con lista (fecha, título, descripción, etiquetas)
+- `/posts/[slug]`
 - RSS en `/rss.xml`
-- Diseño limpio, tipografía buena, dark/light, móvil primero
+- Tema claro / oscuro
 - Castellano
-- Nombre: algo tipo “IA + Swift” / Mario Belenguer
-- Un post de ejemplo para no dejar el home vacío
-- `og:image` básico
-
-No hace falta CMS. Publicar = commit de un `.md`.
-
-Cuando tengas la URL de Vercel, dímela para actualizar la automatización de packs lun/mié/vie.

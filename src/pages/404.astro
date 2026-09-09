@@ -1,0 +1,15 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { site } from "../lib/site";
+---
+
+<Layout title={`No encontrado — ${site.name}`} description="Esta página no existe.">
+  <main class="page">
+    <div class="wrap">
+      <p class="kicker">404</p>
+      <h1>Esta página no existe</h1>
+      <p class="lede">El enlace está roto o el artículo todavía no se ha publicado.</p>
+      <p><a class="back" href="/">Ir al inicio</a></p>
+    </div>
+  </main>
+</Layout>

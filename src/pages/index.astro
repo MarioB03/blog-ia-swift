@@ -1,0 +1,102 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { formatShortDate, readingMinutes, site } from "../lib/site";
+
+const posts = (await getCollection("posts")).sort((a, b) =>
+  a.data.date < b.data.date ? 1 : a.data.date > b.data.date ? -1 : 0,
+);
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
+  a.localeCompare(b, "es"),
+);
+
+function minutesFor(body: string) {
+  return readingMinutes(body);
+}
+---
+
+<Layout>
+  <main class="page">
+    <div class="wrap">
+      <section class="hero">
+        <p class="kicker">Cuaderno</p>
+        <h1>{site.name}</h1>
+        <p class="lede">{site.description}</p>
+      </section>
+
+      <div class="section-head">
+        <h2>Notas</h2>
+        <a class="clear-filter" id="clear-filter" href="/" hidden>
+          Quitar filtro <span class="accent" id="active-tag"></span>
+        </a>
+      </div>
+      <ul class="tags" aria-label="Etiquetas">
+        {
+          tags.map((tag) => (
+            <li>
+              <a href={`/?tag=${tag}`} data-tag={tag}>
+                {tag}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ol class="post-list">
+        {
+          posts.map((post) => (
+            <li data-tags={post.data.tags.join(" ")}>
+              <article>
+                <p class="meta">
+                  <time datetime={post.data.date}>{formatShortDate(post.data.date)}</time>
+                  {" · "}
+                  {minutesFor(post.body)} min
+                </p>
+                <h2>
+                  <a href={`/posts/${post.data.slug}`}>{post.data.title}</a>
+                </h2>
+                <p class="excerpt">{post.data.description}</p>
+                <ul class="tags">
+                  {post.data.tags.map((tag) => (
+                    <li>
+                      <a href={`/?tag=${tag}`} data-tag={tag}>
+                        {tag}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="empty" id="empty" hidden>
+        No hay notas con esa etiqueta. Prueba otra o vuelve al archivo completo.
+      </p>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const tag = params.get("tag");
+  if (tag) {
+    const items = document.querySelectorAll<HTMLElement>("[data-tags]");
+    let visible = 0;
+    items.forEach((item) => {
+      const match = (item.dataset.tags ?? "").split(" ").includes(tag);
+      item.hidden = !match;
+      if (match) visible += 1;
+    });
+    document.querySelectorAll<HTMLAnchorElement>("[data-tag]").forEach((link) => {
+      link.classList.toggle("active", link.dataset.tag === tag);
+    });
+    const clear = document.getElementById("clear-filter");
+    const label = document.getElementById("active-tag");
+    if (clear && label) {
+      clear.hidden = false;
+      label.textContent = tag;
+    }
+    const empty = document.getElementById("empty");
+    if (empty) empty.hidden = visible > 0;
+  }
+</script>

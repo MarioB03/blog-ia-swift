@@ -1,0 +1,46 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { formatPostDate, readingMinutes, site } from "../../lib/site";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const minutes = readingMinutes(post.body);
+---
+
+<Layout title={`${post.data.title} — ${site.name}`} description={post.data.description}>
+  <main class="page">
+    <div class="wrap">
+      <a class="back" href="/">← Todas las notas</a>
+      <header class="article-head">
+        <p class="meta">
+          <time datetime={post.data.date}>{formatPostDate(post.data.date)}</time>
+          {" · "}
+          {minutes} min de lectura
+        </p>
+        <h1>{post.data.title}</h1>
+        <p class="lede">{post.data.description}</p>
+        <ul class="tags">
+          {
+            post.data.tags.map((tag) => (
+              <li>
+                <a href={`/?tag=${tag}`}>{tag}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </header>
+      <article class="prose">
+        <Content />
+      </article>
+    </div>
+  </main>
+</Layout>
