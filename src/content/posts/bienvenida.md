@@ -1,17 +1,17 @@
 ---
-title: "Bienvenida: un cuaderno de IA y Swift"
+title: "Por qué existe este cuaderno"
 slug: bienvenida
-date: 2026-09-09
-description: "Por qué este blog existe, cómo lo escribo con agentes de código y por qué cada pieza también sale en LinkedIn."
+date: 2026-08-22
+description: "Un sitio llamado Rama: agentes de código, Swift y la versión de cada pieza que no cabe en LinkedIn."
 tags:
   - blog
   - ia
   - swift
 ---
 
-Este cuaderno es el sitio donde dejo por escrito cómo uso **Claude Code, Grok, Codex y Cursor** para escribir Swift, SwiftUI y Xcode sin convertirme en un operador de prompts.
+Este sitio se llama **Rama**: como la de git y como la del árbol. Trabajo que crece al lado, a la vista, hasta que merece pasar a main.
 
-No es un newsletter de hacks. Es el archivo de lo que ya he publicado —o voy a publicar— en LinkedIn, con el contexto que allí no cabe: comandos, decisiones, trozos de código y los fallos que no quedan bien en un carrusel.
+Aquí dejo por escrito cómo uso **Claude Code, Grok, Codex y Cursor** para escribir Swift, SwiftUI y Xcode sin convertirme en un operador de prompts. No es un newsletter de hacks. Es el archivo de lo que ya he publicado —o voy a publicar— en LinkedIn, con el contexto que allí no cabe: comandos, decisiones, trozos de código y los fallos que no quedan bien en un carrusel.
 
 ## La regla de publicación
 

@@ -1,7 +1,7 @@
 ---
 title: Cómo uso Claude Code y Grok para no pelearme con Xcode
 slug: agentes-en-xcode
-date: 2026-09-05
+date: 2026-09-08
 description: Un flujo de trabajo concreto para tocar un target de Xcode con agentes, sin dejar que reescriban el proyecto entero.
 tags:
   - claude-code

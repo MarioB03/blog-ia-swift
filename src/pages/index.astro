@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import { formatShortDate, isoDate, readingMinutes, site } from "../lib/site";
+import { formatIndexDate, formatPostDate, isoDate, readingMinutes, site } from "../lib/site";
 
 const posts = (await getCollection("posts")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
@@ -9,65 +9,104 @@ const posts = (await getCollection("posts")).sort(
 const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
   a.localeCompare(b, "es"),
 );
+
+const featured = posts[0];
+const rest = posts.slice(1);
 ---
 
 <Layout>
   <main class="page">
-    <div class="wrap">
-      <section class="hero">
-        <p class="kicker">Cuaderno</p>
-        <h1>{site.name}</h1>
-        <p class="lede">{site.description}</p>
-      </section>
+    <div class="home-grid wrap">
+      <aside class="masthead" aria-label="Sobre el sitio">
+        <p class="kicker">
+          {site.author}
+          <span aria-hidden="true"> · </span>
+          {site.place}
+        </p>
+        <p class="masthead-tagline">{site.tagline}</p>
+        <p class="masthead-bio">{site.bio}</p>
+        <ul class="tags stacked" aria-label="Etiquetas">
+          {
+            tags.map((tag) => (
+              <li>
+                <a class="hit-expand" href={`/?tag=${tag}`} data-tag={tag}>
+                  {tag}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="count">{posts.length} notas</p>
+      </aside>
 
-      <div class="section-head">
-        <h2>Notas</h2>
-        <a class="clear-filter" id="clear-filter" href="/" hidden>
-          Quitar filtro <span class="accent" id="active-tag"></span>
-        </a>
-      </div>
-      <ul class="tags" aria-label="Etiquetas">
+      <section>
+        <div class="section-head" id="archive-head">
+          <h2 class="kicker">Notas</h2>
+          <a class="clear-filter" id="clear-filter" href="/" hidden>
+            Quitar <span class="accent" id="active-tag"></span>
+          </a>
+        </div>
+
         {
-          tags.map((tag) => (
-            <li>
-              <a href={`/?tag=${tag}`} data-tag={tag}>
-                {tag}
-              </a>
-            </li>
-          ))
+          featured ? (
+            <article class="feature" data-tags={featured.data.tags.join(" ")}>
+              <p class="kicker is-accent">
+                <time datetime={isoDate(featured.data.date)}>{formatPostDate(featured.data.date)}</time>
+                {" · "}
+                {readingMinutes(featured.body)} min
+              </p>
+              <h2 class="feature-title">
+                <a class="story-link" href={`/posts/${featured.data.slug}`}>
+                  {featured.data.title}
+                </a>
+              </h2>
+              <p class="lede">{featured.data.description}</p>
+              <ul class="tags">
+                {featured.data.tags.map((tag) => (
+                  <li>
+                    <a class="hit-expand" href={`/?tag=${tag}`} data-tag={tag}>
+                      {tag}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ) : null
         }
-      </ul>
-      <ol class="post-list">
-        {
-          posts.map((post) => (
-            <li data-tags={post.data.tags.join(" ")}>
-              <article>
-                <p class="meta">
-                  <time datetime={isoDate(post.data.date)}>{formatShortDate(post.data.date)}</time>
-                  {" · "}
-                  {readingMinutes(post.body)} min
+
+        <ol class="post-list">
+          {
+            rest.map((post) => (
+              <li class="index-row" data-tags={post.data.tags.join(" ")}>
+                <p class="index-date">
+                  <time datetime={isoDate(post.data.date)}>{formatIndexDate(post.data.date)}</time>
                 </p>
-                <h2>
-                  <a href={`/posts/${post.data.slug}`}>{post.data.title}</a>
-                </h2>
-                <p class="excerpt">{post.data.description}</p>
-                <ul class="tags">
-                  {post.data.tags.map((tag) => (
-                    <li>
-                      <a href={`/?tag=${tag}`} data-tag={tag}>
-                        {tag}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            </li>
-          ))
-        }
-      </ol>
-      <p class="empty" id="empty" hidden>
-        No hay notas con esa etiqueta. Prueba otra o vuelve al archivo completo.
-      </p>
+                <div>
+                  <h2>
+                    <a class="story-link" href={`/posts/${post.data.slug}`}>
+                      {post.data.title}
+                    </a>
+                  </h2>
+                  <p class="excerpt">{post.data.description}</p>
+                  <ul class="tags">
+                    {post.data.tags.map((tag) => (
+                      <li>
+                        <a class="hit-expand" href={`/?tag=${tag}`} data-tag={tag}>
+                          {tag}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <p class="index-mins">{readingMinutes(post.body)} min</p>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="empty" id="empty" hidden>
+          No hay notas con esa etiqueta. Prueba otra o vuelve al archivo completo.
+        </p>
+      </section>
     </div>
   </main>
 </Layout>
@@ -88,11 +127,17 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =
     });
     const clear = document.getElementById("clear-filter");
     const label = document.getElementById("active-tag");
+    const head = document.getElementById("archive-head");
     if (clear && label) {
       clear.hidden = false;
       label.textContent = tag;
     }
+    if (head) {
+      const kicker = head.querySelector("h2");
+      if (kicker) kicker.textContent = "Etiqueta";
+    }
     const empty = document.getElementById("empty");
     if (empty) empty.hidden = visible > 0;
+    document.querySelector(".feature")?.classList.add("is-filtered");
   }
 </script>

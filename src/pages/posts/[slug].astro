@@ -18,21 +18,23 @@ const minutes = readingMinutes(post.body);
 
 <Layout title={`${post.data.title} — ${site.name}`} description={post.data.description}>
   <main class="page">
-    <div class="wrap">
-      <a class="back" href="/">← Todas las notas</a>
+    <div class="article-wrap">
+      <a class="back" href="/">← Índice</a>
       <header class="article-head">
-        <p class="meta">
+        <p class="kicker is-accent">
           <time datetime={isoDate(post.data.date)}>{formatPostDate(post.data.date)}</time>
           {" · "}
           {minutes} min de lectura
         </p>
-        <h1>{post.data.title}</h1>
+        <h1 class="feature-title">{post.data.title}</h1>
         <p class="lede">{post.data.description}</p>
         <ul class="tags">
           {
             post.data.tags.map((tag) => (
               <li>
-                <a href={`/?tag=${tag}`}>{tag}</a>
+                <a class="hit-expand" href={`/?tag=${tag}`}>
+                  {tag}
+                </a>
               </li>
             ))
           }

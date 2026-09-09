@@ -1,6 +1,6 @@
-# IA + Swift
+# Rama
 
-Blog de Mario Belenguer: agentes de código (Claude Code, Grok, Codex, Cursor) aplicados a Swift / SwiftUI / Xcode. Cada artículo alimenta un post de LinkedIn.
+Blog de Mario Belenguer: agentes de código (Claude Code, Grok, Codex, Cursor) aplicados a Swift, SwiftUI y Xcode. El artículo largo vive aquí; LinkedIn se lleva el de un minuto.
 
 Sitio estático en **Astro**. Publicar = commit de un Markdown.
 
@@ -33,7 +33,7 @@ npm run dev
 ## Stack
 
 - Astro 5 + colecciones Markdown
-- Home con lista (fecha, título, descripción, etiquetas)
+- Home con portada + archivo
 - `/posts/[slug]`
 - RSS en `/rss.xml`
 - Tema claro / oscuro
